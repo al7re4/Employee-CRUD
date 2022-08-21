@@ -42,6 +42,17 @@ namespace Employee_CRUD.Controllers
         [HttpPost("AddEmployee")]
         public async Task<int> NewEmpAsync(Models.EmpModel.Emp emp)
         {
+             Messages _messages = new Messages();
+            if (emp.EmpId == 0)
+            {
+                _messages.Message = "Employee " + emp.FullName + " Added";
+            }
+            else
+            {
+                _messages.Message = "Employee " + emp.FullName + " Updated";
+            }
+
+            await _messageHub.Clients.All.SendMessage(_messages);
             return await _emp.NewEmpAsync(emp);
         }
 
